@@ -1,18 +1,17 @@
-
 <script>
-/* Tema: Gerenciamento de estoque
-Descrição: Escreva um programa para gerenciar o estoque de um armazém. O programa deve permitir que o usuário adicione novos itens ao estoque, 
-remova itens existentes e atualize as quantidades disponíveis.
-Exemplo de entrada:
-
-Adicionar um item: Nome do item, quantidade inicial.
-Remover um item: Nome do item.
-Atualizar a quantidade: Nome do item, nova quantidade. */
+    /* Tema: Gerenciamento de estoque
+    Descrição: Escreva um programa para gerenciar o estoque de um armazém. O programa deve permitir que o usuário adicione novos itens ao estoque, 
+    remova itens existentes e atualize as quantidades disponíveis.
+    Exemplo de entrada:
+    
+    Adicionar um item: Nome do item, quantidade inicial.
+    Remover um item: Nome do item.
+    Atualizar a quantidade: Nome do item, nova quantidade. */
     let items = [
         {
             nome: 'Banana',
             id: 1,
-            quantidade:5
+            quantidade: 5
         }
     ]
     let ultimoId = 1
@@ -25,24 +24,28 @@ Atualizar a quantidade: Nome do item, nova quantidade. */
             return
 
         const acoes = [{
-                sigla: 'L',
-                acao: 'Listagem'
-            },
-            {
-                sigla: 'A',
-                acao: 'Adicionar'
-            },
-            {
-                sigla: 'R',
-                acao: 'Remover'
-            },
-            {
-                sigla: 'M',
-                acao: 'Modificar'
-            },
+            sigla: 'L',
+            acao: 'Listagem'
+        },
+        {
+            sigla: 'A',
+            acao: 'Adicionar'
+        },
+        {
+            sigla: 'R',
+            acao: 'Remover'
+        },
+        {
+            sigla: 'M',
+            acao: 'Modificar'
+        },
+        {
+            sigla: 'F',
+            acao: 'FindById'
+        }
         ]
         var acao = prompt(`Selecione as ações,\n 
-        ${acoes.map(ac=> `${ac.sigla}: ${ac.acao},`).join('\n')}    
+        ${acoes.map(ac => `${ac.sigla}: ${ac.acao},`).join('\n')}    
         `)
         if (!acoes.some(ac => ac.sigla === acao)) {
             alert('Ação não encontrada')
@@ -72,8 +75,8 @@ Atualizar a quantidade: Nome do item, nova quantidade. */
                 )
                 break
             }
-            case 'M':{
-                alert( 
+            case 'M': {
+                alert(
                     atualizeItem({
                         id: prompt('Digite o id do item que deseja atualizar'),
                         nome: prompt('Digite nome do item que deseja atualizar'),
@@ -82,9 +85,19 @@ Atualizar a quantidade: Nome do item, nova quantidade. */
                 )
                 break
             }
-                
-        }   
-            
+            case 'F':
+                const validacion = checkItem(
+                    id = prompt('Digite o id do item')
+                )
+                if (typeof validacion == 'string')
+                    alert(
+                        validacion
+                    )
+                else
+                    console.log(validacion)
+                break
+        }
+
 
     })
 
@@ -105,7 +118,7 @@ Atualizar a quantidade: Nome do item, nova quantidade. */
 
     function checkItem(id) {
         const index = items.findIndex(i => i.id === Number(id))
-        return index === -1 ? 'Item não encontrado' : index
+        return index === -1 ? 'Item não encontrado' : items[index]
     }
 
     function removerItem(id) {
@@ -135,17 +148,6 @@ Atualizar a quantidade: Nome do item, nova quantidade. */
         items[index].quantidade = quantidade
         return 'Item atualizado com sucesso'
     }
-    acoes.push({
-        sigla: 'F',
-        acao: 'FindById'
-    })
-    switch(acao){
-        case 'F':
-            alert(
-                checkItem({
-                    id: prompt('Digite o id do item')
-                })
-            )
-            break
-    }
+
+
 </script>
