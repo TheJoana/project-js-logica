@@ -1,0 +1,150 @@
+<script>
+/* Tema: Gerenciamento de estoque
+Descrição: Escreva um programa para gerenciar o estoque de um armazém. O programa deve permitir que o usuário adicione novos itens ao estoque, 
+remova itens existentes e atualize as quantidades disponíveis.
+Exemplo de entrada:
+
+Adicionar um item: Nome do item, quantidade inicial.
+Remover um item: Nome do item.
+Atualizar a quantidade: Nome do item, nova quantidade. */
+    let items = [
+        {
+            nome: 'Banana',
+            id: 1,
+            quantidade:5
+        }
+    ]
+    let ultimoId = 1
+    addEventListener('keypress', (event) => {
+        // ENTRADA
+
+        // VALIDACAO PARA VER O QUE FOI DIGITADO, CASO SEJA DIFERENTE DE ASPA, ELE NAO FAZ NADA
+        // SE FOR ABRE O PROMPT
+        if (event.code !== 'Backquote')
+            return
+
+        const acoes = [{
+                sigla: 'L',
+                acao: 'Listagem'
+            },
+            {
+                sigla: 'A',
+                acao: 'Adicionar'
+            },
+            {
+                sigla: 'R',
+                acao: 'Remover'
+            },
+            {
+                sigla: 'M',
+                acao: 'Modificar'
+            },
+        ]
+        var acao = prompt(`Selecione as ações,\n 
+        ${acoes.map(ac=> `${ac.sigla}: ${ac.acao},`).join('\n')}    
+        `)
+        if (!acoes.some(ac => ac.sigla === acao)) {
+            alert('Ação não encontrada')
+            return
+        }
+
+
+        // PROCESSAMENTO
+        switch (acao) {
+            case 'L':
+                console.log(listagemItem(), "LISTAGEM")
+                break
+
+            case 'A': {
+                alert(
+                    adicionarItem({
+                        nome: prompt('Digite nome do item'),
+                        quantidade: prompt('Digite quantidade do item')
+                    })
+                )
+                break
+            }
+
+            case 'R': {
+                alert(
+                    removerItem(id = prompt('Digite id do item'))
+                )
+                break
+            }
+            case 'M':{
+                alert( 
+                    atualizeItem({
+                        id: prompt('Digite o id do item que deseja atualizar'),
+                        nome: prompt('Digite nome do item que deseja atualizar'),
+                        quantidade: prompt('Digite quantidade do item que deseja atualizar')
+                    })
+                )
+                break
+            }
+                
+        }   
+            
+
+    })
+
+    function adicionarItem({
+        nome,
+        quantidade
+    }) {
+        if (!nome || (!quantidade && quantidade !== 0))
+            return 'Campos Faltantes'
+        ultimoId++
+        items.push({
+            nome,
+            quantidade,
+            id: ultimoId
+        })
+        return 'Item adicionado'
+    }
+
+    function checkItem(id) {
+        const index = items.findIndex(i => i.id === Number(id))
+        return index === -1 ? 'Item não encontrado' : index
+    }
+
+    function removerItem(id) {
+        const index = checkItem(id)
+        if (typeof index === 'string')
+            return index
+
+        items = items.filter(item => item.id !== Number(id))
+        return 'Item removido com sucesso'
+    }
+
+    function listagemItem() {
+        return items
+    }
+
+    function atualizeItem({
+        id,
+        nome,
+        quantidade
+    }) {
+        if (!nome || (!quantidade && quantidade !== 0))
+            return 'Campos Faltantes'
+        const index = checkItem(id)
+        if (typeof index === 'string')
+            return index
+        items[index].nome = nome
+        items[index].quantidade = quantidade
+        return 'Item atualizado com sucesso'
+    }
+    acoes.push({
+        sigla: 'F',
+        acao: 'FindById'
+    })
+    switch(acao){
+        case 'F':
+            alert(
+                checkItem({
+                    id: prompt('Digite o id do item')
+                })
+            )
+            break
+    }
+</script>
